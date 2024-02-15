@@ -10,5 +10,4 @@ import com.example.demo.model.WorkSpace;
 
 public interface WorkSpaceRepository extends JpaRepository<WorkSpace, Serializable>{
 	
-	
 }

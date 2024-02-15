@@ -94,12 +94,11 @@ public class UsuarioController {
 	 * @return
 	 */
 	@PostMapping(path = "/insertUser", consumes = MediaType.APPLICATION_JSON_VALUE)
-	public DTO insertUsuaria(@RequestBody DTO userDTO, HttpServletRequest request) {
+	public DTO insertUsuario(@RequestBody DTO userDTO, HttpServletRequest request) {
 		DTO result = new DTO();
 
 		Usuario newUser = new Usuario();
 	    Usuario existingUser = usRep.findByEmail(userDTO.get("email").toString());
-//		String tokken = "";
 
 		try {
 			if(existingUser == null) {

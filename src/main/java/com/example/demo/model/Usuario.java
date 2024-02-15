@@ -111,22 +111,22 @@ public class Usuario implements Serializable {
 		return this.belongs;
 	}
 
-	public void setBelongs1(List<Belong> belongs1) {
-		this.belongs = belongs1;
+	public void setBelongs(List<Belong> belongs) {
+		this.belongs = belongs;
 	}
 
-	public Belong addBelongs1(Belong belongs1) {
-		getBelongs().add(belongs1);
-		belongs1.setUsuario(this);
+	public Belong addBelongs(Belong belongs) {
+		getBelongs().add(belongs);
+		belongs.setUsuario(this);
 
-		return belongs1;
+		return belongs;
 	}
 
-	public Belong removeBelongs1(Belong belongs1) {
-		getBelongs().remove(belongs1);
-		belongs1.setUsuario(null);
+	public Belong removeBelongs(Belong belongs) {
+		getBelongs().remove(belongs);
+		belongs.setUsuario(null);
 
-		return belongs1;
+		return belongs;
 	}
 
 }

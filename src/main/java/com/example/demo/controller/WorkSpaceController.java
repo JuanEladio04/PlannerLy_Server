@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.model.Belong;
 import com.example.demo.model.Usuario;
 import com.example.demo.model.WorkSpace;
+import com.example.demo.repository.BelongRepository;
 import com.example.demo.repository.UsuarioRepository;
 import com.example.demo.repository.WorkSpaceRepository;
 import com.example.demo.security.JWTAutenticator;
@@ -28,40 +30,59 @@ import jakarta.servlet.http.HttpServletResponse;
 @RequestMapping("/workspace")
 public class WorkSpaceController {
 	@Autowired
-	WorkSpaceRepository wsRep;
-	UsuarioRepository usRep;
+	WorkSpaceRepository wkRep;
+	@Autowired
+	UsuarioRepository uRep;
+	@Autowired
+	BelongRepository bRep;
 
-//	public List<WorkSpace> getWorkspacesByUser(int userId) {
-//		  String query = "SELECT w FROM WorkSpace w JOIN w.belongs b WHERE b.usuario = :usuario";
-//		  TypedQuery<WorkSpace> typedQuery = EntityManager.createQuery(query, WorkSpace.class);
-//		  
-//		  typedQuery.setParameter("usuario", user);
-//		  return typedQuery.getResultList();
-//		}
-//	
-//	
-//	@GetMapping(path = "/getWorkSpacesByUserId", consumes = MediaType.APPLICATION_JSON_VALUE)
-//	public DTO getWorkspacesByUser(@RequestBody DTO user, HttpServletRequest request, HttpServletResponse response) {
-//		DTO result = new DTO();
-//		Usuario u = usRep.findById(1);
-//		String tokken = "";
-//
-//		if (u != null) {
-//			if (u.getPassword().toString().equals(userData.get("password"))) {
-//				result.put("result", "success");
-//				tokken = JWTAutenticator.createTokken(u);
-////				Cookie cook = new Cookie("jwt", tokken);
-////				cook.setMaxAge(7* 24 * 60 * 60);
-////	            response.addCookie(cook);
-//				result.put("tokken", tokken);
-//			} else {
-//				result.put("result", "Contraseña incorrecta");
-//			}
-//
-//		} else {
-//			result.put("result", "Email incorrecto");
-//		}
-//		return result;
-//	}
+	/**
+	 * Creates a new WorkSpace
+	 * 
+	 * @param usuariaDTO
+	 * @param request
+	 * @return
+	 */
+	@PostMapping(path = "/insertWorkSpace", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public DTO insertWorkSpace(@RequestBody DTO wkDTO, HttpServletRequest request) {
+		DTO result = new DTO();
+
+		// Obtener el usuario actual
+		Usuario user = uRep.findById(JWTAutenticator.getUidFromJWRResquest(request));
+
+		if (user == null) {
+			result.put("result", "Usuario no encontrado");
+			return result;
+		}
+
+		try {
+			// Validar los datos recibidos en el DTO
+			String name = wkDTO.get("name").toString();
+			String description = wkDTO.get("description").toString();
+			if (name.isEmpty() || description.isEmpty()) {
+				result.put("result", "El nombre y la descripción del espacio de trabajo son obligatorios");
+				return result;
+			}
+
+			// Crear y guardar el nuevo espacio de trabajo
+			WorkSpace newWK = new WorkSpace();
+			newWK.setName(name);
+			newWK.setDescription(description);
+			WorkSpace savedWorkSpace = wkRep.save(newWK);
+
+			// Crear y guardar la relación de pertenencia
+			Belong newB = new Belong();
+			newB.setUsuario(user);
+			newB.setWorkSpace(savedWorkSpace);
+			bRep.save(newB);
+
+			result.put("result", "success");
+		} catch (Exception e) {
+			result.put("result", "No ha sido posible crear el espacio de trabajo: " + e.getMessage());
+			e.printStackTrace();
+		}
+
+		return result;
+	}
 
 }
