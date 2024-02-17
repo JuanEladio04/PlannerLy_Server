@@ -9,5 +9,5 @@ import com.example.demo.model.Usuario;
 import com.example.demo.model.WorkSpace;
 
 public interface WorkSpaceRepository extends JpaRepository<WorkSpace, Serializable>{
-	public abstract WorkSpace findById(int id);
+	public abstract WorkSpace findById(Integer id);
 }

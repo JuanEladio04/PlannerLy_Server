@@ -21,7 +21,7 @@ public class WorkSpace implements Serializable {
     @OneToMany(mappedBy = "workSpace", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Belong> belongs;
 
-    @OneToMany(mappedBy = "workSpace")
+    @OneToMany(mappedBy = "workSpace", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Publication> publications;
 
     public WorkSpace() {
