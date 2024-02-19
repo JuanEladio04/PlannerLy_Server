@@ -14,6 +14,12 @@ public class Publication implements Serializable {
 
     @OneToOne(mappedBy = "publication", cascade = CascadeType.ALL)
     private Nota nota;
+    
+    @OneToOne(mappedBy = "publication", cascade = CascadeType.ALL)
+    private Tarea tarea;
+    
+    @OneToOne(mappedBy = "publication", cascade = CascadeType.ALL)
+    private Recordatorio recordatorio;
 
     @ManyToOne
     @JoinColumn(name = "wsid")
@@ -45,4 +51,21 @@ public class Publication implements Serializable {
     public void setWorkSpace(WorkSpace workSpace) {
         this.workSpace = workSpace;
     }
+
+	public Tarea getTarea() {
+		return tarea;
+	}
+
+	public void setTarea(Tarea tarea) {
+		this.tarea = tarea;
+	}
+
+	public Recordatorio getRecordatorio() {
+		return recordatorio;
+	}
+
+	public void setRecordatorio(Recordatorio recordatorio) {
+		this.recordatorio = recordatorio;
+	}
+    
 }
