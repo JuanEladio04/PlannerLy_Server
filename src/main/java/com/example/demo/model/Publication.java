@@ -9,9 +9,10 @@ public class Publication implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @OneToOne(mappedBy = "publication")
+    @OneToOne(mappedBy = "publication", cascade = CascadeType.ALL)
     private Nota nota;
 
     @ManyToOne
