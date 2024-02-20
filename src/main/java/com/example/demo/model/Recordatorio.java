@@ -18,13 +18,15 @@ public class Recordatorio implements Serializable {
 
 	@Id
 	private int pid;
+	
+	private String title;
 
 	private byte completed;
 
 	@Temporal(TemporalType.DATE)
-	private Date date;
+	private String date;
 
-	private Time hour;
+	private String hour;
 
 	//bi-directional one-to-one association to Publication
 	@OneToOne
@@ -42,6 +44,14 @@ public class Recordatorio implements Serializable {
 		this.pid = pid;
 	}
 
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
 	public byte getCompleted() {
 		return this.completed;
 	}
@@ -50,19 +60,19 @@ public class Recordatorio implements Serializable {
 		this.completed = completed;
 	}
 
-	public Date getDate() {
+	public String getDate() {
 		return this.date;
 	}
 
-	public void setDate(Date date) {
-		this.date = date;
+	public void setDate(String string) {
+		this.date = string;
 	}
 
-	public Time getHour() {
+	public String getHour() {
 		return this.hour;
 	}
 
-	public void setHour(Time hour) {
+	public void setHour(String hour) {
 		this.hour = hour;
 	}
 
