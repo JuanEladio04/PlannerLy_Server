@@ -14,8 +14,8 @@ services:
       - ../:/app
     ports:
       - "8080:8080"
-    # command:
-    #   "java -jar "
+    command:
+      "mvn spring-boot:run"
     networks:
       - plannerly_network
 

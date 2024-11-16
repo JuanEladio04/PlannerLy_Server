@@ -6,5 +6,3 @@ WORKDIR /app
 
 # Exponer el puerto en el que tu aplicación correrá
 EXPOSE 8080
-
-CMD ["mvn", "spring-boot:run"]
