@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  plannerly-springboot-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: Plannerly_Server
+    restart: always
+    stdin_open: true
+    tty: true
+    working_dir: /app
+    volumes:
+      - ../:/app
+    ports:
+      - "8080:8080"
+    # command:
+    #   "java -jar "
+    networks:
+      - plannerly_network
+
+  db:
+    image: mysql:8.0
+    container_name: Plannerly_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+      MYSQL_DATABASE: PlannerLy
+    ports:
+      - "3306:3306"
+    volumes:
+      - ../sql:/docker-entrypoint-initdb.d
+    networks:
+      - plannerly_network
+
+networks:
+  plannerly_network:  
+    driver: bridge
