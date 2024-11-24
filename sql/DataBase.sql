@@ -23,9 +23,10 @@ DROP TABLE IF EXISTS `belongs`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `belongs` (
-  `uid` int NOT NULL,
+  `id` int NOT NULL ,
+  `uid` int NOT NULL ,
   `wsid` int NOT NULL,
-  PRIMARY KEY (`uid`,`wsid`),
+  PRIMARY KEY (`uid`, `uid`,`wsid`),
   KEY `fk_work_space_idx` (`wsid`),
   CONSTRAINT `fk_user_id` FOREIGN KEY (`uid`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `fk_workSpace_id` FOREIGN KEY (`wsid`) REFERENCES `work_space` (`id`)
