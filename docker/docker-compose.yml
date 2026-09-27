@@ -1,28 +1,32 @@
-name: PlannerLy
+name: plannerly
 
 services:
   plannerly-springboot-app:
     build:
-      context: .
-      dockerfile: Dockerfile
+      context: ..
+      dockerfile: docker/Dockerfile
     container_name: Plannerly_Server
-    restart: always
     stdin_open: true
     tty: true
     working_dir: /app
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://Plannerly_db:3306/PlannerLy?useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: admin
     volumes:
-      - ../:/app
+      - ..:/app
     ports:
       - "8080:8080"
-    command:
-      "mvn spring-boot:run"
+    command: "mvn spring-boot:run"
+    depends_on:
+      Plannerly_db:
+        condition: service_healthy
     networks:
       - plannerly_network
 
-  db:
+  Plannerly_db:
     image: mysql:8.0
     container_name: Plannerly_db
-    restart: always
     environment:
       MYSQL_ROOT_PASSWORD: admin
       MYSQL_USER: admin
@@ -32,9 +36,18 @@ services:
       - "3306:3306"
     volumes:
       - ../sql:/docker-entrypoint-initdb.d
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "admin", "-padmin"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
     networks:
       - plannerly_network
 
+volumes:
+  mysql_data:
+
 networks:
-  plannerly_network:  
+  plannerly_network:
     driver: bridge
